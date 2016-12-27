@@ -6,6 +6,8 @@
 // Множество - реализация через битовые поля
 
 #include "tset.h"
+#include <stdexcept>
+
 TSet::TSet(int mp) : MaxPower(mp), BitField(mp) { }
 
 TSet::TSet(const TSet &s) : MaxPower(s.MaxPower), BitField(s.BitField) { // конструктор копирования 
@@ -63,7 +65,7 @@ TSet TSet :: operator+(const int Elem) { // объединение с элеме
 		return temp;
 	}
 	else
-		throw 1; // вызов исключения
+    throw std::logic_error("Exceeded the maximum power of the set\n");
 }
 
 TSet TSet :: operator-(const int Elem) {
@@ -73,7 +75,7 @@ TSet TSet :: operator-(const int Elem) {
 		return temp;
 	}
 	else
-		throw 2; // вызов исключения
+    throw std::logic_error("Exceeded the maximum power of the set\n");
 }
 
 TSet TSet :: operator*(const TSet &s) { // пересечение

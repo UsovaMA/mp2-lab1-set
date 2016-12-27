@@ -6,16 +6,17 @@
 // Битовое поле
 
 #include "tbitfield.h"
+#include <stdexcept>
 
 TBitField::TBitField(int len) : BitLen(len) { // конструктор
 	if (len > -1) {
-		MemLen = (len + 15) >> 4;
+		MemLen = (len + sizeof(TELEM) * 8 - 1) >> sizeof(TELEM);
 		pMem = new TELEM[MemLen];
 		if (pMem != NULL)
 			for (int i = 0; i < MemLen; i++) pMem[i] = 0;
 	}
 	else
-		throw 1; // вызов исключения
+    throw std::logic_error("Input error: enter a negative length\n");
 }
 
 TBitField::TBitField(const TBitField &bf) { // конструктор
@@ -32,11 +33,11 @@ TBitField :: ~TBitField() {
 }
 
 int TBitField::GetMemIndex(const int n) const {
-	return n >> 4;
+	return n >> sizeof(TELEM);
 }
 
 TELEM TBitField::GetMemMask(const int n) const {
-	return 1 << (n & 15);
+	return 1 << (n & (sizeof(TELEM) * 8 - 1));
 }
 int TBitField::GetLength(void) const {
 	return BitLen;
@@ -46,21 +47,21 @@ void TBitField::SetBit(const int n) {
 	if ((n > -1) && (n < BitLen))
 		pMem[GetMemIndex(n)] |= GetMemMask(n);
 	else
-		throw 2; // вызов исключения
+    throw std::logic_error("Input error: enter a inadmissible number of bits\n");
 }
 
 void TBitField::ClrBit(const int n) {
 	if ((n > -1) && (n < BitLen))
 		pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 	else
-		throw 3; // вызов исключения
+    throw std::logic_error("Input error: enter a inadmissible number of bits\n");
 }
 
 int TBitField::GetBit(const int n) const {
 	if ((n > -1) && (n < BitLen))
 		return pMem[GetMemIndex(n)] & GetMemMask(n);
 	else
-		throw 4; // вызов исключения
+    throw std::logic_error("Input error: enter a inadmissible number of bits\n");
 }
 
 TBitField & TBitField :: operator=(const TBitField &bf) {
