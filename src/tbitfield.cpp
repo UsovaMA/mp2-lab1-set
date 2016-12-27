@@ -122,7 +122,7 @@ TBitField TBitField :: operator~ (void) {
 }
 istream &operator >> (istream &istr, TBitField &bf) { //ввод
 	int i = 0; char ch;
-	do { istr >> ch; } while (ch != ' ');
+	do { istr >> ch; } while (ch == ' ');
 	while (1) {
 		istr >> ch;
 		if (ch == '0') bf.ClrBit(i++);
